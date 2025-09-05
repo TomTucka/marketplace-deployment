@@ -1,0 +1,63 @@
+name: Hello World Deployment
+
+on:
+  workflow_dispatch:
+    inputs:
+      product_id:
+        description: 'Product ID'
+        required: true
+        type: string
+      deployment_id:
+        description: 'Deployment ID'
+        required: true
+        type: string
+      region:
+        description: 'Deployment region'
+        required: true
+        type: string
+        default: 'us-east-1'
+      instance_type:
+        description: 'Instance type'
+        required: true
+        type: choice
+        options:
+          - t3.micro
+          - t3.small
+          - t3.medium
+          - t3.large
+        default: 't3.micro'
+      environment:
+        description: 'Environment'
+        required: true
+        type: choice
+        options:
+          - dev
+          - staging
+          - production
+        default: 'dev'
+      product_name:
+        description: 'Product name'
+        required: true
+        type: string
+
+jobs:
+  hello-world:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        
+      - name: Echo Hello World
+        run: echo "Hello World"
+        
+      - name: Display deployment parameters
+        run: |
+          echo "=== Deployment Parameters ==="
+          echo "Product ID: ${{ github.event.inputs.product_id }}"
+          echo "Deployment ID: ${{ github.event.inputs.deployment_id }}"
+          echo "Region: ${{ github.event.inputs.region }}"
+          echo "Instance Type: ${{ github.event.inputs.instance_type }}"
+          echo "Environment: ${{ github.event.inputs.environment }}"
+          echo "Product Name: ${{ github.event.inputs.product_name }}"
+          echo "=========================="
